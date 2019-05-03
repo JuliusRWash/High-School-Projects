@@ -1,0 +1,182 @@
+import java.util.*;
+import java.lang.Character;
+import java.math.*;
+public class HangmanBoard extends FixedTurnGame
+{
+//You may load whatever words you’d like
+   
+   private static final String[] words = {"dog", "cat", "mom", "dog cat bull"};
+   //. . . other instance variables you deem necessary
+   //Constructor, n is the number of missed letters before losing
+   ArrayList<String> gL;
+   ArrayList<String> cL;
+   ArrayList<String> b;
+   ArrayList<String> c;
+   int choice;
+   
+   public HangmanBoard(int n, int a)
+   {
+      super(n);
+      gL = new ArrayList<String>();
+      cL = new ArrayList<String>();
+      b = new ArrayList<String>();
+      c = new ArrayList<String>();
+      turn = n;
+      choice = a;
+   }
+   
+   //precondition: s is one character long and is a letter
+   //precondition: turns remain
+   //postcondition: returns whether s is in the secret message
+   public boolean guessLetter(String s)
+   {  
+      char a = s.charAt(0);
+      if(!(alreadyGuessed(s))&&(!(Character.isDigit(a))) && (s.length() == 1))
+      {
+      gL.add(s);
+      if((isLetter(s)) && (canTakeTurn()))
+      {
+         for(int x = 0; x < words[choice].length(); x++)
+         {
+            char b = words[choice].charAt(x);
+            if(a == b)
+            {
+               cL.add(s);
+               System.out.print("Correct!");
+               return true;
+            }
+          }
+      }
+       takeTurn();
+       System.out.println("Incorrect!");
+      return false; 
+     }
+     System.out.print("You can't guess this letter.");
+     return false;
+   }
+   
+   public void begin()
+   {
+      String hw = words[choice];
+      char[] a = hw.toCharArray();
+      for(int x = 0; x <= a.length - 1; x++)
+      {
+         if(words[choice].length() != c.size())
+         {
+            if(Character.isSpaceChar(words[choice].charAt(x)))
+            {
+               b.add(Character.toString(a[x]));
+               c.add(" ");
+               System.out.print(" ");
+            }
+            else{
+            
+               b.add(Character.toString(a[x]));
+               c.add("-");
+               System.out.print("-");
+            }
+         }
+      }
+      System.out.print("\n");
+    }
+      
+   
+   //precondition: s is one character long and is a letter
+   //postcondition: returns true if s has been guessed
+   public boolean alreadyGuessed(String s)
+   {
+      for(int x = 0; x < gL.size(); x++)
+      {  
+         if(s.equals(gL.get(x)))
+         {
+            return true;
+         }
+       }
+       return false;
+   }
+   
+   //postcondition: returns true if the secret message has not been
+   // determined and no turns remain
+   public boolean hasLost()
+   {
+      if(!canTakeTurn())
+      {
+         return true;
+      }
+     return false;
+   }
+   //postcondition: the secret message has been completely guessed
+   public boolean hasWon()
+   {
+      boolean me = true;
+      for(int x = 0; x < words[choice].length(); x++)
+      {
+         if(c.get(x).charAt(0) != words[choice].charAt(x))
+         {
+            me = false;
+         }
+       }
+      return me;
+      
+   }
+   
+   //precondition: no turns remain
+   //postcondition: returns the secret message
+   public String getSolution()
+   {
+      String a = "";
+      if(super.turn == 0)
+      {
+         a = words[choice];
+         System.out.println(a);
+         return a;
+      }
+     return a;
+   }
+   
+   //postcondition: returns whether s is a string of length one and a letter
+   public static boolean isLetter(String s)
+   {
+      char a = s.charAt(0);
+      if(Character.isLetter(a))
+      {
+         return true;
+      }
+      return false;       
+   }
+   
+   //postcondition: returns a string of the message with hyphens (-) in place
+   // of letters that haven’t been guessed
+   public String toString()
+   {
+      String fini = "";
+      this.begin();
+            
+      for(int y = 0; y < b.size(); y++)
+      {
+         for(int i = 0; i < cL.size(); i++)
+         {
+            if(b.get(y).equals(cL.get(i)))
+            { 
+               c.set(y, cL.get(i));
+            }
+          } 
+       }
+       
+       for(int x = 0; x < b.size(); x++)
+       {
+         fini += c.get(x);
+       }
+       System.out.println(fini);
+       return fini;   
+   }
+         
+   
+   //postcondition: picks a random secret message to begin next game
+   public void newGame()
+   {
+      super.newGame();
+      choice = (int)(Math.random()*2+1);
+      
+   }
+}
