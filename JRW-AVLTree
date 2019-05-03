@@ -1,0 +1,245 @@
+//Couldn't figure out why E never worked, never got to test it!
+//:(
+//JRW
+public class JRWAVLTree<E extends Comparable<E>>
+{
+   private BBTNode<E> root;
+   private int size;
+   
+   public JRWAVLTree()
+   {
+      root = null;
+      size = 0;
+   }
+   
+   public boolean contains(E obj)
+   {
+      BBTNode temp = root;
+      while(!(temp.equals(null)))
+      {
+         if(temp.getValue.compareTo(obj) == 0)
+         {
+            return true;
+         }
+         
+         else if(temp.getValue.compareTo(obj) < 0)
+         {
+            temp = temp.getLeft();
+         }
+         
+         else if(temp.getValue.compareTo(obj) > 0)
+         {
+            temp = temp.getRight();
+         }
+         
+      }
+      return false;
+   }
+   public void add(E obj)
+   {
+      this.add2(obj, root);
+   }
+   public void add2(E obj, BBTNode temp)
+   {
+      
+      if(temp.getValue().compareTo(null) == 0)
+      {
+         temp.setValue(obj);
+      }
+      
+     else if(obj.compareTo(temp.getValue()) < 0)
+     {
+         temp.setLeft(add2(obj,temp.getLeft()));
+         if(temp.getRight().getHeight()-temp.getLeft().getHeight() > 1)
+         {
+            if(obj.compareTo(temp.getLeft().getValue()) < 0)
+            {
+               temp = temp.rotateLeft();
+            }
+         }
+         else
+         {
+            temp = temp.rotateRightLeft();
+         }
+      }
+     else if(obj.compareTo(temp.getValue()) > 0)
+     {
+         temp.setRight(add2(obj,temp.getRight()));
+         if(temp.getRight().getHeight()-temp.getLeft().getHeight() > 1)
+         {
+            if(obj.compareTo(temp.getLeft().getValue()) > 0)
+            {  
+               temp = temp.rotateRight();
+            }
+         }
+         else
+         {
+            temp = temp.rotateLeftRight();
+         }
+       }
+    //fixing the height is where I  throw in the towel temp.setHeight()
+   }
+         
+   
+   public void remove(E obj)
+   {
+      this.remove2(obj, root);
+   }
+   
+   public BBTNode remove2(E obj, BBTNode temp)
+   {
+       if(temp.getValue().compareTo(null) == 0)
+       {
+            System.out.print("Can't do that");
+       }  
+        if(obj.compareTo(temp.getValue()) < 0)
+        {
+            temp.setLeft(remove2(obj,temp.getLeft()));
+        }
+        else if(obj.compareTo(temp.getValue()) > 0)
+        {
+            temp.setRight(remove2(obj,temp.getRight()));
+        }
+        else
+        {
+            System.out.print("Can't do that");
+        }
+       return temp;
+    }
+   
+   public boolean isEmpty()
+   {
+      return size == 0;
+   }
+   
+   public int size()
+   {
+      return size;
+   }
+   
+   public E first()
+   {
+      BBTNode temp = root;
+      while(temp.getRight().getValue().compareTo(null) != 0)
+      {
+         temp = temp.getRight();
+      }
+     return temp.getValue();
+   }
+   
+   public E last()
+   {
+      BBTNode temp = root;
+      while(temp.getLeft().getValue().compareTo(null) != 0)
+      {
+         temp = temp.getLeft();
+      }
+     return temp.getValue();
+      
+   }
+   
+   private class BBTNode<E>
+   {
+      private E val;
+      private int height;
+      private int bf;
+      private BBTNode<E> left, right;
+      
+      public BBTNode(E value)
+      {
+         val = value;
+         height = 0;
+         bf = 0;
+         left = null;
+         right = null;
+         
+      }
+      
+      public void setValue(E value)
+      {
+         value = value;
+      }
+      
+      public E getValue()
+      {
+         return val;
+      }
+      
+      public BBTNode getLeft()
+      {
+         return left;
+      }
+      
+      public void setLeft(BBTNode lc)
+      {
+         left = lc;
+      }
+      
+      public BBTNode getRight()
+      {
+         return right;
+      }
+      
+      public void setRight(BBTNode rc)
+      {
+         right = rc;
+      }
+      
+      public int getHeight() 
+      {
+         return height;
+      }
+      public void setHeight(int h) 
+      {
+         height = h;
+      }
+      /*private int getBalanace()
+      {
+      }*/
+      
+      
+      private BBTNode rotateLeft()
+      {
+         BBTNode temp;
+         temp = this.getLeft();
+         this.setLeft(temp.getRight());
+         temp.setRight(this);
+         this.setHeight(max(this.getLeft().getHeight(),this.getRight().getHeight())+1);
+         temp.setHeight(max(temp.getLeft().getHeight(),this.getHeight())+1);
+         return temp;
+      }
+      
+      private BBTNode rotateLeftRight()
+      {
+         this.setRight(this.getRight().rotateLeft());
+         return this.rotateRight();
+      }
+      
+      private BBTNode rotateRight()
+      {
+         BBTNode temp;
+         temp = this.getRight();
+         this.setRight(temp.getLeft());
+         temp.setLeft(this);
+         this.setHeight(max(this.getLeft().getHeight(),this.getRight().getHeight())+1);
+         temp.setHeight(max(temp.getRight().getHeight(),this.getHeight())+1);
+         return temp;
+      }
+      
+      private BBTNode rotateRightLeft()
+      {
+         this.setLeft(this.getLeft().rotateRight());
+         return this.rotateLeft();
+      }
+      
+      private int max(int l, int r)
+      {
+         if(l > r)
+         {
+            return r;
+         }
+       return l;
+     } 
+   }
+ }
+  
