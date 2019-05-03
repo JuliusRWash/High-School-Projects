@@ -1,0 +1,169 @@
+import java.io.*;
+import java.util.*;
+public class JRWHeap<E extends Comparable<E>>
+{
+   public ArrayList<E> root;
+   int k = 0;
+   boolean word;
+   public JRWHeap()
+   {
+      root = new ArrayList<E>();
+
+   }
+   
+   public JRWHeap(boolean ans)
+   {
+      word = ans;
+      root = new ArrayList<E>();
+   }
+   
+   public boolean add(E obj)
+   {
+      root.add(obj);
+      bubbleUp();
+      return true;
+   }
+   
+   private boolean checkUp()
+   {
+      int i = root.size()-1;
+      if(word == true)
+      {
+         if(i == 0)
+         {
+            return false;
+         }
+         if(root.get(i).compareTo(root.get((i-1)/2)) < 0)
+         {
+            return true;
+         }
+      }
+      else if(word == false)
+      {
+         if(i == 0)
+         {
+            return false;
+         }
+         if(root.get(i).compareTo(root.get((i-1)/2)) > 0)
+         {
+            return true;
+         }  
+       }
+    return false;
+   }
+   
+   private void bubbleUp()
+   {
+      int i = root.size()-1;
+      while(checkUp())
+      {
+         E temp = root.get(root.size()-1);
+         root.set(i, root.get((i-1)/2));
+         root.set((i-1)/2,temp);
+      }
+   }       
+   
+   public E peek()
+   {
+      return root.get(root.size()-1);
+   }
+   
+   public E pop()
+   {
+     E temp = root.remove(0);
+     root.add(0, root.get(root.size()-1));
+     root.remove(root.get(root.size()-1));
+     cascadeDown();
+     return temp;
+   }
+   
+   private void cascadeDown()
+   {
+      k = k;
+      while(checkDown())
+      {
+         E temp = root.get(k);
+         root.set(k, root.get((k-1)/2));
+         root.set((k-1)/2,temp);    
+      }
+   }
+   
+   private boolean checkDown()
+   {
+      k = k;
+      if(word == true)
+      {
+         if(root.get(k).compareTo(root.get((k*2)+1)) > 0)
+         {
+            k = (k*2)+1;
+            return true;
+         }
+         
+         else if(root.get(k).compareTo(root.get((k*2)+2)) > 0)
+         {
+            k = (k*2)+2;
+            return true;
+         }
+      }
+      else if(word == false)
+      {
+         if(root.get(k).compareTo(root.get((k*2)+1)) < 0)
+         {
+            k = (k*2)+1;
+            return true;
+         }
+         
+         else if(root.get(k).compareTo(root.get((k*2)+2)) < 0)
+         {
+            k = (k*2)+2;
+            return true;
+         }
+       }
+         
+     return false;
+   } 
+   public String toString()
+   {
+      String ans = "[";
+      for(int x = 0; x < root.size(); x++)
+      {
+         if(x != root.size()-1)
+            ans += root.get(x) + ", ";
+         else
+            ans += root.get(x) + "]";
+      }
+      return ans;
+   }
+      
+      
+   public boolean isEmpty()
+   {
+      return root.size() == 0;
+   }
+     
+   public int size()
+   {
+      return root.size();
+   }
+   
+   public static void main (String []args)
+   {
+      Integer i = new Integer(15);
+      Integer a = new Integer(7);
+      Integer c = new Integer(18);
+      Integer z = new Integer(6);
+      Integer y = new Integer(3);
+      Integer x = new Integer(2);
+      Integer w = new Integer(1);
+      JRWHeap j = new JRWHeap(false);
+      j.add(i);
+      j.add(a);
+      j.add(c);
+      j.add(z);
+      j.add(y);
+      j.add(x);
+      j.pop();
+      System.out.print(j.toString());
+   }
+   
+}
