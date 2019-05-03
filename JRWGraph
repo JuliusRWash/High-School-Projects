@@ -1,0 +1,168 @@
+import java.io.*;
+import java.util.*;
+public class JRWGraph
+{
+   public boolean dir;
+   public int nV;
+   public static ArrayList<ArrayList<Integer>> arr;
+   public int edge;
+   public JRWGraph()
+   {
+      dir = false;
+      nV = 0;
+      arr = new ArrayList<ArrayList<Integer>>();
+      edge = 0;
+   }
+   
+   public JRWGraph(boolean isDirected)
+   {
+      dir = isDirected;
+      nV = 0;
+      arr = new ArrayList<ArrayList<Integer>>();
+      edge = 0;
+   }
+   
+   public JRWGraph(int numVertices)
+   {
+      nV = numVertices;
+      dir = false;
+      arr = new ArrayList<ArrayList<Integer>>();
+   }
+   public JRWGraph(int numVertices, boolean isDirected)
+   {
+      nV = numVertices;
+      dir = isDirected;
+      arr = new ArrayList<ArrayList<Integer>>();
+      edge = 0;
+   }
+   
+   private static boolean isOne()
+   {
+     if(arr.size() == 1)
+     {
+         return true;
+     }
+    return false;
+   }
+     
+   public void addVertex()
+   {
+      arr.add(new ArrayList<Integer>());
+   }
+   
+   public boolean addEdge(int a, int b)
+   {
+      if(!isOne())
+      {
+         arr.get(a).add(b);
+         edge++;
+         return true;
+      }
+      return false;
+   }
+   
+   public boolean containsEdge(int a, int b)
+   {
+      
+     return arr.get(a).contains(b);
+   }
+   
+   public boolean isComplete()
+   {
+      boolean ans = true;
+      for(int x = 0; x < arr.size(); x++)
+      {
+         if(!arr.get(x).contains(x))
+         {
+            return false;
+         }
+      }
+      return ans;    
+   }
+   
+   public boolean isStar()
+   {
+      boolean ans1 = false;
+      boolean ans2 = false;
+      int ans3 = 0;
+     for(int x = 0; x < arr.size(); x++)
+     {
+       for(int y = 0; y < arr.get(x).size(); y++)
+       {
+         if(arr.get(x).contains(y))
+         {
+            ans1 = true;
+            if(ans1 = true && y == arr.get(x).size()-1)
+            {
+               ans2 = true;
+               
+            }
+         }
+         else{
+            ans1 = false;
+            y = arr.get(x).size();
+         }
+       }   
+     }
+     if(ans2)
+     {
+        for(int x = 0; x < arr.size(); x++)
+        {
+          for(int y = 0; y < arr.get(x).size(); y++)
+          {
+            if(arr.get(x).get(y) != x)
+            {
+               return false; 
+            }
+          }
+       }
+    }
+     
+     return ans2;
+   }
+   
+   public void removeEdge(int a, int b)
+   {
+      for(int x = 0; x < arr.get(a).size(); x++)
+      {
+        if(arr.get(a).get(x) == b)
+        {
+          arr.remove(arr.get(a).get(x));
+        }
+      }
+   }
+   
+   public int numVertices()
+   {
+      return arr.size();
+   }
+   
+   public int numEdges()
+   {
+      return edge;
+   }
+   
+   public int degree(int v)
+   {
+      int ans = 0;
+      for(int x = 0; x < arr.size(); x++)
+      {
+         if(arr.get(x).contains(v)&&(x != v))
+         {
+            ans++;
+         }
+      }
+      return ans;
+   }
+   
+   public String toString()
+   {
+      return Arrays.deepToString(arr.toArray());
+   }
+   
+   public static void main(String[] args)
+   {
+      
+   }
+   
+}
