@@ -1,0 +1,338 @@
+//Julius Ryan Washington
+//10/9/17
+//Data Strcutures     jkvzknlczv
+import java.util.Iterator;
+import java.lang.Iterable;
+public class JRWLinkedList<E>
+{
+   LLNode hokage = null;
+   int size = 0;
+   public JRWLinkedList()
+   {
+      
+   }
+   
+   private boolean add(E obj)
+	{
+      
+      if(hokage == null)
+      {
+         hokage = new LLNode(obj, null);
+         size++;
+         return true;
+      }
+      
+      LLNode temp = hokage;
+      LLNode yosh = new LLNode(obj, null);
+      if(hokage != null)
+      {
+         while(temp.getNext() != null)
+         {
+            temp = temp.getNext();
+         }
+        temp.setNext(yosh);
+       }
+       size++;
+       return true;
+   }
+   
+   private void add(int idx, E obj)
+   {  
+      LLNode yosh = new LLNode(obj, null);
+		LLNode head = hokage;
+      LLNode temp = new LLNode(null, null);
+      LLNode copy = temp;
+      for(int x = 0; x <= size; x++)
+      {
+         if(x == idx)
+         {
+            if(x == 0)
+            {
+               copy.setNext(yosh);
+               copy = copy.getNext();
+               temp = temp.getNext();
+             }
+             else{
+               copy.setNext(yosh);
+               copy = copy.getNext();
+            }
+         }
+         else{
+         if(x == 0)
+         {
+            LLNode rar = new LLNode(head.getValue(),null);
+            copy.setNext(rar);
+            head = head.getNext();
+            copy = copy.getNext();
+            temp = temp.getNext();
+         }
+           else{
+            LLNode rar = new LLNode(head.getValue(),null);
+            copy.setNext(rar);
+            head = head.getNext();
+            copy = copy.getNext();
+          }
+        }
+      }
+      size++;
+      hokage = temp;
+      
+	} 
+    
+    private boolean contains(Object obj)
+    {
+       LLNode head = hokage;
+       for(int x = 0; x <= size; x++)
+       {
+         if(head.getValue().equals(obj))
+         {
+            System.out.println("It works");
+            return true;
+         }
+        head = head.getNext();
+       }
+      return false;
+    }
+    
+    public void clear()
+    {
+      hokage = null;
+      size = 0;
+    }
+    
+    private Object get(int idx)
+    {
+      if(idx > size || idx < 0)
+      {
+         return null;
+      }
+      
+      LLNode head = hokage;
+      for(int x = 0; x <= idx; x++)
+      {
+         if(x == idx)
+         {
+            return head.getValue();
+         }
+        head = head.getNext();
+      }
+      return null;
+    }
+      
+     
+   private int indexOf(Object obj)
+	{
+     LLNode temp = hokage;
+     if(this.contains(obj))
+     {
+      for(int x = 0; x <= size; x++)
+      {
+        if(temp.getValue().equals(obj))
+        {
+            System.out.println(x);
+            return x;
+        }
+       temp = temp.getNext();
+      }
+     }
+     return -1;
+   }
+   
+   private boolean isEmpty()
+	{
+      return size == 0;
+   }
+   
+   private int lastIndexOf(Object obj)
+	{
+      LLNode temp = hokage;
+     if(this.contains(obj))
+     {
+      for(int x = size; x >= 0; x--)
+      {
+        if(temp.getValue().equals(obj))
+        {
+            System.out.println(x);
+            return x;
+        }
+       temp = temp.getNext();
+      }
+     }
+     return -1;
+   }
+	private Object remove(int idx)
+	{  
+      Object obj = null;
+		LLNode head = hokage;
+      LLNode temp = new LLNode(null, null);
+      LLNode copy = temp;
+      boolean type = true;
+      for(int x = 0; x < size; x++)
+      {
+         if(idx == x)
+         {
+            obj = head.getValue();
+            head = head.getNext();  
+         }
+         
+         else{
+            if(type)
+            {
+               LLNode rar = new LLNode(head.getValue(),null);
+               copy.setNext(rar);
+               head = head.getNext();
+               copy = copy.getNext();
+               temp = temp.getNext();
+               type = false;
+            }
+              else{
+               LLNode rar = new LLNode(head.getValue(),null);
+               copy.setNext(rar);
+               head = head.getNext();
+               copy = copy.getNext();
+             }
+           }
+         
+      }
+   size--;
+   hokage = temp;
+   return obj;
+   }
+   
+   private boolean remove(Object obj)
+	{  
+   	LLNode head = hokage;
+      LLNode temp = new LLNode(null, null);
+      LLNode copy = temp;
+      boolean type = true;
+      boolean check = false;
+      for(int x = 0; x < size; x++)
+      {
+         if(obj == head.getValue())
+         {
+            check = true;
+            head = head.getNext();  
+         }
+         
+         else{
+            if(type)
+            {
+               LLNode rar = new LLNode(head.getValue(),null);
+               copy.setNext(rar);
+               head = head.getNext();
+               copy = copy.getNext();
+               temp = temp.getNext();
+               type = false;
+            }
+              else{
+               LLNode rar = new LLNode(head.getValue(),null);
+               copy.setNext(rar);
+               head = head.getNext();
+               copy = copy.getNext();
+            }
+         }
+      }
+      size--;
+      hokage = temp;
+      return check;
+   }
+   
+   private Object set(int idx, Object obj)
+	{
+      Object save = null;
+      LLNode head = hokage;
+      for(int x = 0; x < size; x++)
+      {
+         if(idx == x)
+         {
+            save = head.getValue();
+            head.setValue(obj);
+            head = head.getNext();
+         }
+         else{
+         head = head.getNext();
+         }
+       }
+     return save;         
+   }
+   
+   public int size()
+   {
+      return size;
+   }
+   
+   private Object[] toArray()
+	{
+      Object[] arr = new Object[size];
+      LLNode head = hokage;
+      for(int x = 0; x < size; x++)
+      {
+         arr[x] = head.getValue();
+         head = head.getNext();
+      }
+      return arr;
+         
+   }
+   
+   public String toString()
+	{
+      String ans = "[";
+      LLNode head = hokage;
+      for(int x = 0; x < size; x++)
+      {
+         if(x == size-1)
+         {
+            ans += head.getValue() + "]";
+            head = head.getNext();
+         }
+          else{
+            ans += head.getValue() + ", ";
+            head = head.getNext();
+         }
+       }
+       System.out.println(ans);
+		return ans;
+   }
+        
+   private class LLNode<E>
+   {
+      public Object value;
+      public LLNode<E> next;
+      
+      public LLNode(Object val, LLNode<E> n)
+      {
+         value = val;
+         next = n;
+      }
+      
+      public LLNode(E val)
+      {
+         value = val;
+         next = null;
+      }
+      
+      public Object getValue()
+      {
+         return value;
+      }
+      
+      public LLNode<E> getNext()
+      {
+         return next;
+      }
+      public void setValue(E val)
+      {
+         value = val;
+      }
+      
+      public void setNext(LLNode<E> n)
+      {
+         next = n;
+      }
+    }
+ 
+  public static void main (String []args)
+   {
+
+   }
+}
