@@ -1,0 +1,214 @@
+//Huffman Decoder
+import java.util.*;
+import java.lang.Object;
+public class JRWHuffmanCoder
+{
+   BTN root;
+   //Left children
+   BTN c0;//head left
+   BTN c00;//head of very left
+   BTN c01;//head of left rights
+   BTN c010;
+   BTN c011;
+   BTN c0111;//n
+   BTN c0110;
+   BTN c01101;
+   BTN c011011;//b
+   BTN c011010;
+   BTN c0110100;//v
+   BTN c0110101;
+   BTN c01101010;
+   BTN c011010101; //j
+   BTN c011010100;
+   BTN c0110101000;//q
+   BTN c0110101001;//k
+   BTN c01101011;
+   BTN c011010110;//z
+   BTN c011010111;//x
+   BTN c01100;
+   BTN c0100;//o
+   BTN c0101;//i
+   BTN c000;
+   BTN c001;
+   BTN c0011;//a
+   BTN c0010;
+   BTN c00100;//d
+   BTN c00101;//l
+   BTN c0000;
+   BTN c00001;
+   BTN c011000;//p
+   BTN c011001;//g
+   BTN c000010;//f
+   BTN c000011;//y
+   BTN c0001;//t
+   BTN c00000;
+   BTN c000000;//w
+   BTN c000001;//m
+   //Right side
+   BTN c1;
+   BTN c10;
+   BTN c100;//space
+   BTN c101;//e
+   BTN c11;
+   BTN c110;
+   BTN c1101;//r
+   BTN c1100;//s
+   BTN c111;
+   BTN c1110;//H
+   BTN c1111;
+   BTN c11110;//u
+   BTN c11111;//c
+      
+   public JRWHuffmanCoder()
+   {
+     //Level 10
+     c0110101000 = new BTN('q', null, null);
+     c0110101001 = new BTN('k', null, null);
+     //level 9
+     c011010100 = new BTN('~', c0110101000, c0110101001);
+     c011010101 = new BTN('j', null, null);
+     c011010110 = new BTN('z', null, null);
+     c011010111 = new BTN('x', null, null);
+      //Level 8
+     c01101010 = new BTN('~', c011010100, c011010101);
+     c01101011 = new BTN('~', c011010110, c011010111);
+      //level 7
+     c0110100 = new BTN('v', null, null);
+     c0110101 = new BTN('~', c01101010, c01101011);
+      //Level 6
+     c000000 = new BTN('w', null, null);
+     c000001 = new BTN('m', null, null);
+     c000010 = new BTN('f', null, null);
+     c000011 = new BTN('y', null, null);
+     c011000 = new BTN('p', null, null);
+     c011001 = new BTN('g', null, null);
+     c011010 = new BTN('~', c0110100, c0110101);
+     c011011 = new BTN('b', null, null);
+     //Level 5
+     c00000 = new BTN('~', c000000, c000001);
+     c00001 = new BTN('~', c000010, c000011);
+     c00100 = new BTN('d', null, null);
+     c00101 = new BTN('l', null, null);
+     c01100 = new BTN('~', c011000, c011001);
+     c01101 = new BTN('~', c011010, c011011);
+     c11110 = new BTN('u', null, null);
+     c11111 = new BTN('c', null, null);
+      //Level 4
+     c0000 = new BTN('~', c00000, c00001);
+     c0001 = new BTN('t', null, null);
+     c0010 = new BTN('~', c00100, c00101);
+     c0011 = new BTN('a', null, null);
+     c0100 = new BTN('o', null, null);
+     c0101 = new BTN('i', null, null);
+     c0110 = new BTN('~', c01100, c01101);
+     c0111 = new BTN('n', null, null);
+     c1100 = new BTN('s', null, null);
+     c1101 = new BTN('r', null, null);
+     c1110 = new BTN('h', null, null);
+     c1111 = new BTN('~', c11110, c11111);
+     //Level 3
+     c000 = new BTN('~', c0000, c0001);
+     c001 = new BTN('~', c0010, c0011);
+     c010 = new BTN('~', c0100, c0101);
+     c011 = new BTN('~', c0110, c0111);
+     c100 = new BTN(' ', null, null);
+     c101 = new BTN('e', null, null);
+     c110 = new BTN('~', c1100, c1101);
+     c111 = new BTN('~', c1110, c1111);
+       //Level 2
+     c00 = new BTN('~', c000, c001);
+     c01 = new BTN('~', c010, c011);
+     c10 = new BTN('~', c100, c101);
+     c11 = new BTN('~', c110, c111);  
+     //Level 1
+     c0 = new BTN('~', c00, c01);
+     c1 = new BTN('~', c10, c11);
+     
+     root = new BTN('~', c0, c1); 
+
+   }
+   public String decode(String s)
+   {
+     BTN temp = root;
+     Character c = '~';
+     String ans = "";
+     for(int x = 0;x < s.length(); x++)
+     {
+      if((temp.getValue() != null)&&(temp.getValue() == c))
+      {
+         if(s.charAt(x) == '0')
+         {
+            temp = temp.nextRight();
+         }
+         
+         else if(s.charAt(x) == '1')
+         {
+            temp = temp.nextLeft();
+         }
+        }
+        if((temp.getValue() != c)&&(temp.getValue() != null))
+        {
+         ans += temp.getValue().toString();
+         temp = root;
+        }
+      }
+      
+      System.out.print(ans);
+      return ans;
+   }
+   
+   public String encode(String s)
+   {
+      return s;
+   }
+  
+   
+   public static void main(String[] args)
+   {
+      JRWHuffmanCoder j = new JRWHuffmanCoder();
+      j.decode("11100100011000101");
+ 
+   }
+   
+   
+   private class BTN<Character>
+   {
+     public Character value;
+     public BTN<Character> nextRight;
+     public BTN<Character> nextLeft;
+     char c = '~';
+     
+      public BTN(Character val, BTN<Character> right, BTN<Character> left)
+      {
+         value = val;
+         nextRight = right;
+         nextLeft = left;
+      }
+      
+       public boolean isLeaf()
+       {
+         if(value != null)
+         {
+            return true;
+         }
+         return false;
+       } 
+       
+       public Character getValue()
+       {
+         return value;
+       }
+       
+       public BTN<Character> nextRight()
+       {
+         return nextRight;
+       }
+       
+       public BTN<Character> nextLeft()
+       {
+         return nextLeft;
+       }
+  
+   }
+   
+}
